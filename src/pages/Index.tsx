@@ -1,16 +1,35 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { FlaskConical } from "lucide-react";
+import FileUpload from "@/components/FileUpload";
+import PolysomeChart from "@/components/PolysomeChart";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
+  const [data, setData] = useState<{ fraction: number; absorbance: number }[] | null>(null);
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="min-h-screen bg-background">
+      <header className="border-b border-border bg-card">
+        <div className="mx-auto flex max-w-5xl items-center gap-3 px-6 py-5">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
+            <FlaskConical className="h-5 w-5 text-primary-foreground" />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold text-foreground tracking-tight">
+              Polysome Profiling Viewer
+            </h1>
+            <p className="text-xs text-muted-foreground">
+              Upload &amp; visualize polysome fractionation data
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-5xl space-y-8 px-6 py-10">
+        <FileUpload onDataParsed={setData} />
+        {data && <PolysomeChart data={data} />}
+      </main>
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
