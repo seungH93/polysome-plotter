@@ -62,6 +62,7 @@ export default {
           border: "hsl(var(--drop-zone-border))",
           active: "hsl(var(--drop-zone-active))",
         },
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
