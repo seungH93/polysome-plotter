@@ -1,80 +1,95 @@
 import { useCallback, useState } from "react";
 import { Upload } from "lucide-react";
+import { DataPoint } from "@/types/sample";
 
 interface FileUploadProps {
-  onDataParsed: (data: { fraction: number; absorbance: number }[]) => void;
+  onSamplesAdded: (samples: { name: string; data: DataPoint[] }[]) => void;
+  disabled?: boolean;
+  remainingSlots: number;
 }
 
-const FileUpload = ({ onDataParsed }: FileUploadProps) => {
+const FileUpload = ({ onSamplesAdded, disabled, remainingSlots }: FileUploadProps) => {
   const [isDragging, setIsDragging] = useState(false);
-  const [fileName, setFileName] = useState<string | null>(null);
 
-  const processFile = useCallback(
-    async (file: File) => {
-      setFileName(file.name);
+  const processFiles = useCallback(
+    async (files: FileList | File[]) => {
+      const list = Array.from(files).slice(0, remainingSlots);
       const XLSX = await import("xlsx");
-      const buffer = await file.arrayBuffer();
-      const workbook = XLSX.read(buffer);
-      const sheet = workbook.Sheets[workbook.SheetNames[0]];
-      const raw: any[][] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+      const parsed: { name: string; data: DataPoint[] }[] = [];
 
-      const data = raw
-        .filter((row) => typeof row[0] === "number" && typeof row[1] === "number")
-        .map((row) => ({ fraction: row[0], absorbance: row[1] }));
+      for (const file of list) {
+        const buffer = await file.arrayBuffer();
+        const workbook = XLSX.read(buffer);
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const raw: any[][] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-      onDataParsed(data);
+        const data = raw
+          .filter((row) => typeof row[0] === "number" && typeof row[1] === "number")
+          .map((row) => ({ fraction: row[0] as number, absorbance: row[1] as number }));
+
+        const name = file.name.replace(/\.(xlsx|csv)$/i, "");
+        parsed.push({ name, data });
+      }
+
+      if (parsed.length) onSamplesAdded(parsed);
     },
-    [onDataParsed]
+    [onSamplesAdded, remainingSlots]
   );
 
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
       setIsDragging(false);
-      const file = e.dataTransfer.files[0];
-      if (file) processFile(file);
+      if (disabled) return;
+      processFiles(e.dataTransfer.files);
     },
-    [processFile]
+    [processFiles, disabled]
   );
 
   const handleFileInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) processFile(file);
+      if (e.target.files) processFiles(e.target.files);
+      e.target.value = "";
     },
-    [processFile]
+    [processFiles]
   );
 
   return (
     <div
       onDragOver={(e) => {
         e.preventDefault();
-        setIsDragging(true);
+        if (!disabled) setIsDragging(true);
       }}
       onDragLeave={() => setIsDragging(false)}
       onDrop={handleDrop}
-      className={`relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-12 transition-all cursor-pointer ${
-        isDragging
-          ? "border-primary bg-drop-zone-active scale-[1.01]"
-          : "border-drop-zone-border bg-drop-zone hover:border-primary/60"
+      className={`relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-10 transition-all ${
+        disabled
+          ? "border-border bg-muted opacity-60 cursor-not-allowed"
+          : isDragging
+          ? "border-primary bg-drop-zone-active scale-[1.01] cursor-pointer"
+          : "border-drop-zone-border bg-drop-zone hover:border-primary/60 cursor-pointer"
       }`}
-      onClick={() => document.getElementById("file-input")?.click()}
+      onClick={() => !disabled && document.getElementById("file-input")?.click()}
     >
       <input
         id="file-input"
         type="file"
         accept=".xlsx,.csv"
+        multiple
         className="hidden"
         onChange={handleFileInput}
+        disabled={disabled}
       />
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent mb-4">
-        <Upload className="h-7 w-7 text-primary" />
+      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-accent mb-3">
+        <Upload className="h-6 w-6 text-primary" />
       </div>
-      <p className="text-lg font-semibold text-foreground">
-        {fileName ? fileName : "Drop your data file here"}
+      <p className="text-base font-semibold text-foreground">
+        {disabled ? "Maximum samples reached" : "Drop sample file(s) to add"}
       </p>
       <p className="mt-1 text-sm text-muted-foreground">
-        {fileName ? "Drop another file to replace" : "Supports .xlsx and .csv files"}
+        {disabled
+          ? "Remove a sample to upload more"
+          : `Supports .xlsx / .csv · ${remainingSlots} slot${remainingSlots === 1 ? "" : "s"} remaining`}
       </p>
     </div>
   );
