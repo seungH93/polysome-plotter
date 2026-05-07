@@ -1,0 +1,502 @@
+{
+  "vendor": [
+    {
+      "vendor_id": "V_NEB",
+      "vendor_name_kr": "NEB",
+      "vendor_name_en": "New England Biolabs",
+      "country": "미국",
+      "homepage": "https://www.neb.com",
+      "contact_person": null,
+      "email": null,
+      "distributor": "필코리아테크놀로지",
+      "status": "사용중",
+      "note": "기존 LP/LP-FS 원재료사"
+    },
+    {
+      "vendor_id": "V_NANOHELIX",
+      "vendor_name_kr": "나노헬릭스",
+      "vendor_name_en": "NanoHelix",
+      "country": "한국",
+      "homepage": null,
+      "contact_person": null,
+      "email": null,
+      "distributor": null,
+      "status": "후보",
+      "note": "Polymerase 후보"
+    }
+  ],
+  "product": [
+    {
+      "product_id": "P_NEB_E7645L",
+      "vendor_id": "V_NEB",
+      "category": "LP",
+      "applied_panel": "HEME(D), SOLID(D)",
+      "product_name": "NEBNext® Ultra™ II DNA Library Prep Kit",
+      "cat_no": "E7645L",
+      "package_qty": 96,
+      "unit": "rxn",
+      "unit_price_krw": 2964975.0,
+      "price_per_test_krw": 30885.15625,
+      "RUO_IVD": "RUO",
+      "current_or_candidate": "기존",
+      "product_url": null,
+      "note": "Physical shearing library prep"
+    },
+    {
+      "product_id": "P_NEB_E7805L",
+      "vendor_id": "V_NEB",
+      "category": "LP-FS",
+      "applied_panel": "HEME(D), HLA",
+      "product_name": "NEBNext® Ultra™ II FS DNA Library Prep Kit",
+      "cat_no": "E7805L",
+      "package_qty": 96,
+      "unit": "rxn",
+      "unit_price_krw": 3086020.0,
+      "price_per_test_krw": 32146.0416666667,
+      "RUO_IVD": "RUO",
+      "current_or_candidate": "기존",
+      "product_url": null,
+      "note": "Enzymatic fragmentation library prep"
+    },
+    {
+      "product_id": "P_NEB_E3340L",
+      "vendor_id": "V_NEB",
+      "category": "LP-FS",
+      "applied_panel": "HEME(D)",
+      "product_name": "NEBNext® UltraExpress™ FS DNA Library Prep Kit",
+      "cat_no": "E3340L",
+      "package_qty": 96,
+      "unit": "rxn",
+      "unit_price_krw": null,
+      "price_per_test_krw": 0.0,
+      "RUO_IVD": "RUO",
+      "current_or_candidate": "후보",
+      "product_url": null,
+      "note": "대체 후보"
+    },
+    {
+      "product_id": "P_NANOHELIX_HFNGS100",
+      "vendor_id": "V_NANOHELIX",
+      "category": "Pol",
+      "applied_panel": "-",
+      "product_name": "HelixAmp™ Hi-Fidelity NGS polymerase",
+      "cat_no": "HFNGS100",
+      "package_qty": 100,
+      "unit": "rxn",
+      "unit_price_krw": 180000.0,
+      "price_per_test_krw": 1800.0,
+      "RUO_IVD": "RUO",
+      "current_or_candidate": "후보",
+      "product_url": null,
+      "note": "NGS library amplification"
+    }
+  ],
+  "spec": [
+    {
+      "spec_id": "S_NEB_E7805L",
+      "product_id": "P_NEB_E7805L",
+      "input_type": "gDNA",
+      "input_amount": "100 pg - 500 ng",
+      "fragmentation": "Enzymatic",
+      "FS_component": "O",
+      "LP_component": "O",
+      "bead_component": "X",
+      "adapter_component": "별도구매",
+      "index_component": "별도구매",
+      "UMI": "적용 가능/별도구매",
+      "automation": "X",
+      "platform": "Illumina",
+      "max_length": null,
+      "component_summary": "FS+LP 포함, bead/index/adapter 별도",
+      "note": "기존 LP-FS"
+    },
+    {
+      "spec_id": "S_NANOHELIX_HFNGS100",
+      "product_id": "P_NANOHELIX_HFNGS100",
+      "input_type": "gDNA, cDNA",
+      "input_amount": "gDNA: 10-500 ng; cDNA: 25-750 ng",
+      "fragmentation": null,
+      "FS_component": null,
+      "LP_component": null,
+      "bead_component": null,
+      "adapter_component": null,
+      "index_component": null,
+      "UMI": null,
+      "automation": null,
+      "platform": null,
+      "max_length": "2.5 kb",
+      "component_summary": "PCR Polymerase",
+      "note": "NGS library amplification"
+    }
+  ],
+  "comparison": [
+    {
+      "comparison_id": "C_LPFS_001",
+      "category": "LP-FS",
+      "applied_panel": "HEME(D)",
+      "current_product_id": "P_NEB_E7805L",
+      "alternative_product_id": "P_NEB_E3340L",
+      "purpose": "LP-FS 대체 가능성 평가",
+      "period": "2026.04~",
+      "tester": "권빛나",
+      "result_status": "대체 가능",
+      "result_summary": "기존 대비 주요 QC/검출 성능 확인 예정",
+      "conclusion": "대체 가능으로 1차 판단",
+      "next_action": "가격/공급 조건 확인 및 추가 패널 확대 평가",
+      "created_date": 46113,
+      "updated_date": 46149
+    }
+  ],
+  "experiment": [
+    {
+      "experiment_id": "E_LPFS_001_001",
+      "comparison_id": "C_LPFS_001",
+      "metric_group": "시험법",
+      "metric_name": "시험 단계",
+      "current_value": null,
+      "alternative_value": null,
+      "unit": null,
+      "criterion": null,
+      "judgement": "Review",
+      "comment": "기존 파일에서 상세값 미기재"
+    },
+    {
+      "experiment_id": "E_LPFS_001_002",
+      "comparison_id": "C_LPFS_001",
+      "metric_group": "시험법",
+      "metric_name": "시약 수",
+      "current_value": null,
+      "alternative_value": null,
+      "unit": "개",
+      "criterion": null,
+      "judgement": "Review",
+      "comment": "기존 파일에서 상세값 미기재"
+    },
+    {
+      "experiment_id": "E_LPFS_001_003",
+      "comparison_id": "C_LPFS_001",
+      "metric_group": "시험법",
+      "metric_name": "TAT",
+      "current_value": null,
+      "alternative_value": null,
+      "unit": "시간 또는 일",
+      "criterion": null,
+      "judgement": "Review",
+      "comment": "기존 파일에서 상세값 미기재"
+    },
+    {
+      "experiment_id": "E_LPFS_001_004",
+      "comparison_id": "C_LPFS_001",
+      "metric_group": "시험법",
+      "metric_name": "Hands-on time",
+      "current_value": null,
+      "alternative_value": null,
+      "unit": "시간",
+      "criterion": null,
+      "judgement": "Review",
+      "comment": "기존 파일에서 상세값 미기재"
+    },
+    {
+      "experiment_id": "E_LPFS_001_005",
+      "comparison_id": "C_LPFS_001",
+      "metric_group": "Library QC",
+      "metric_name": "Fragmentation QC",
+      "current_value": null,
+      "alternative_value": null,
+      "unit": null,
+      "criterion": null,
+      "judgement": "Review",
+      "comment": null
+    },
+    {
+      "experiment_id": "E_LPFS_001_006",
+      "comparison_id": "C_LPFS_001",
+      "metric_group": "Library QC",
+      "metric_name": "Pre-hyb QC",
+      "current_value": null,
+      "alternative_value": null,
+      "unit": null,
+      "criterion": null,
+      "judgement": "Review",
+      "comment": null
+    },
+    {
+      "experiment_id": "E_LPFS_001_007",
+      "comparison_id": "C_LPFS_001",
+      "metric_group": "Library QC",
+      "metric_name": "Final library QC",
+      "current_value": null,
+      "alternative_value": null,
+      "unit": null,
+      "criterion": null,
+      "judgement": "Review",
+      "comment": null
+    },
+    {
+      "experiment_id": "E_LPFS_001_008",
+      "comparison_id": "C_LPFS_001",
+      "metric_group": "Sequencing QC",
+      "metric_name": "Density",
+      "current_value": null,
+      "alternative_value": null,
+      "unit": null,
+      "criterion": null,
+      "judgement": "Review",
+      "comment": null
+    },
+    {
+      "experiment_id": "E_LPFS_001_009",
+      "comparison_id": "C_LPFS_001",
+      "metric_group": "Sequencing QC",
+      "metric_name": "Q30",
+      "current_value": null,
+      "alternative_value": null,
+      "unit": "%",
+      "criterion": null,
+      "judgement": "Review",
+      "comment": null
+    },
+    {
+      "experiment_id": "E_LPFS_001_010",
+      "comparison_id": "C_LPFS_001",
+      "metric_group": "Sequencing QC",
+      "metric_name": "Output",
+      "current_value": null,
+      "alternative_value": null,
+      "unit": "Gb 또는 reads",
+      "criterion": null,
+      "judgement": "Review",
+      "comment": null
+    },
+    {
+      "experiment_id": "E_LPFS_001_011",
+      "comparison_id": "C_LPFS_001",
+      "metric_group": "Data QC",
+      "metric_name": "Q30 trimmed",
+      "current_value": null,
+      "alternative_value": null,
+      "unit": "%",
+      "criterion": null,
+      "judgement": "Review",
+      "comment": null
+    },
+    {
+      "experiment_id": "E_LPFS_001_012",
+      "comparison_id": "C_LPFS_001",
+      "metric_group": "Data QC",
+      "metric_name": "On-target",
+      "current_value": null,
+      "alternative_value": null,
+      "unit": "%",
+      "criterion": null,
+      "judgement": "Review",
+      "comment": null
+    },
+    {
+      "experiment_id": "E_LPFS_001_013",
+      "comparison_id": "C_LPFS_001",
+      "metric_group": "Data QC",
+      "metric_name": "Duplicate",
+      "current_value": null,
+      "alternative_value": null,
+      "unit": "%",
+      "criterion": null,
+      "judgement": "Review",
+      "comment": null
+    },
+    {
+      "experiment_id": "E_LPFS_001_014",
+      "comparison_id": "C_LPFS_001",
+      "metric_group": "Data QC",
+      "metric_name": "On-target coverage",
+      "current_value": null,
+      "alternative_value": null,
+      "unit": "X",
+      "criterion": null,
+      "judgement": "Review",
+      "comment": null
+    },
+    {
+      "experiment_id": "E_LPFS_001_015",
+      "comparison_id": "C_LPFS_001",
+      "metric_group": "Variant detection",
+      "metric_name": "검출률",
+      "current_value": null,
+      "alternative_value": null,
+      "unit": "%",
+      "criterion": null,
+      "judgement": "Review",
+      "comment": null
+    },
+    {
+      "experiment_id": "E_LPFS_001_016",
+      "comparison_id": "C_LPFS_001",
+      "metric_group": "Variant detection",
+      "metric_name": "LOD",
+      "current_value": null,
+      "alternative_value": null,
+      "unit": "%",
+      "criterion": null,
+      "judgement": "Review",
+      "comment": null
+    }
+  ],
+  "attachment": [
+    {
+      "attachment_id": "A_SAMPLE_001",
+      "linked_type": "comparison",
+      "linked_id": "C_LPFS_001",
+      "file_name": "비교 실험 원자료 파일명 입력",
+      "file_type": "Excel",
+      "file_path_or_url": "./files/example.xlsx",
+      "description": "실험 raw data 또는 정리본",
+      "uploaded_by": "권빛나",
+      "uploaded_date": 46149,
+      "note": "샘플 행"
+    },
+    {
+      "attachment_id": "A_SAMPLE_002",
+      "linked_type": "product",
+      "linked_id": "P_NEB_E3340L",
+      "file_name": "제품 브로셔 파일명 입력",
+      "file_type": "PDF",
+      "file_path_or_url": "./files/brochure.pdf",
+      "description": "제품 소개자료",
+      "uploaded_by": null,
+      "uploaded_date": 46149,
+      "note": "샘플 행"
+    }
+  ],
+  "categories": [
+    {
+      "category": "material_category",
+      "value": "LP",
+      "description": "Library prep kit - physical shearing"
+    },
+    {
+      "category": "material_category",
+      "value": "LP-FS",
+      "description": "Library prep kit - enzymatic fragmentation"
+    },
+    {
+      "category": "material_category",
+      "value": "Hyb",
+      "description": "Hybrid capture reagent"
+    },
+    {
+      "category": "material_category",
+      "value": "Probe",
+      "description": "Hybrid capture probe"
+    },
+    {
+      "category": "material_category",
+      "value": "Index",
+      "description": "Index / adapter index"
+    },
+    {
+      "category": "material_category",
+      "value": "Pol",
+      "description": "PCR polymerase"
+    },
+    {
+      "category": "material_category",
+      "value": "Primer",
+      "description": "PCR primer"
+    },
+    {
+      "category": "material_category",
+      "value": "Bead",
+      "description": "Cleanup bead"
+    },
+    {
+      "category": "material_category",
+      "value": "Frag",
+      "description": "Fragmentase"
+    },
+    {
+      "category": "material_category",
+      "value": "etc",
+      "description": "기타 원재료"
+    },
+    {
+      "category": "status",
+      "value": "후보",
+      "description": "검토 전 또는 정보 수집 단계"
+    },
+    {
+      "category": "status",
+      "value": "평가중",
+      "description": "비교 실험 진행 중"
+    },
+    {
+      "category": "status",
+      "value": "대체 가능",
+      "description": "실험 결과상 대체 가능"
+    },
+    {
+      "category": "status",
+      "value": "조건부 가능",
+      "description": "특정 조건에서 가능"
+    },
+    {
+      "category": "status",
+      "value": "대체 불가",
+      "description": "성능/가격/공급 이슈 등으로 대체 불가"
+    },
+    {
+      "category": "judgement",
+      "value": "Pass",
+      "description": "기준 충족"
+    },
+    {
+      "category": "judgement",
+      "value": "Fail",
+      "description": "기준 미충족"
+    },
+    {
+      "category": "judgement",
+      "value": "Review",
+      "description": "추가 검토 필요"
+    },
+    {
+      "category": "file_type",
+      "value": "PDF",
+      "description": "브로셔/매뉴얼/문헌"
+    },
+    {
+      "category": "file_type",
+      "value": "Excel",
+      "description": "실험 결과/원자료"
+    },
+    {
+      "category": "file_type",
+      "value": "PPT",
+      "description": "발표자료"
+    },
+    {
+      "category": "file_type",
+      "value": "Image",
+      "description": "이미지/그래프"
+    },
+    {
+      "category": "linked_type",
+      "value": "vendor",
+      "description": "업체에 연결"
+    },
+    {
+      "category": "linked_type",
+      "value": "product",
+      "description": "제품에 연결"
+    },
+    {
+      "category": "linked_type",
+      "value": "comparison",
+      "description": "비교 건에 연결"
+    },
+    {
+      "category": "linked_type",
+      "value": "experiment",
+      "description": "실험 결과에 연결"
+    }
+  ]
+}
