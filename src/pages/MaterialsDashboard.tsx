@@ -105,16 +105,40 @@ export default function MaterialsDashboard() {
       category: p.category,
     }));
 
-  const selectedProduct = productMap[selectedProductId];
-  const selectedSpec = D.spec.find((s) => s.product_id === selectedProductId);
-  const productComparisons = D.comparison.filter(
-    (c) =>
-      c.current_product_id === selectedProductId ||
-      c.alternative_product_id === selectedProductId
-  );
+  const selectedProduct = selectedProductId ? productMap[selectedProductId] : null;
+  const selectedSpec = selectedProductId ? D.spec.find((s) => s.product_id === selectedProductId) : null;
+  const productComparisons = selectedProductId
+    ? D.comparison.filter(
+        (c) =>
+          c.current_product_id === selectedProductId ||
+          c.alternative_product_id === selectedProductId,
+      )
+    : [];
   const productExperiments = D.experiment.filter((e) =>
-    productComparisons.some((c) => c.comparison_id === e.comparison_id)
+    productComparisons.some((c) => c.comparison_id === e.comparison_id),
   );
+
+  // Catalog: search + sort + paginate
+  const searched = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    let list = filteredProducts;
+    if (q) {
+      list = list.filter((p) =>
+        [p.product_name, p.cat_no, p.category, p.applied_panel, vendorMap[p.vendor_id]?.vendor_name_kr, vendorMap[p.vendor_id]?.vendor_name_en]
+          .filter(Boolean)
+          .some((s) => String(s).toLowerCase().includes(q)),
+      );
+    }
+    const sorted = [...list];
+    if (sortBy === "name") sorted.sort((a, b) => a.product_name.localeCompare(b.product_name));
+    if (sortBy === "price") sorted.sort((a, b) => (a.unit_price_krw ?? 0) - (b.unit_price_krw ?? 0));
+    if (sortBy === "category") sorted.sort((a, b) => a.category.localeCompare(b.category));
+    return sorted;
+  }, [filteredProducts, search, sortBy, vendorMap]);
+
+  const totalPages = Math.max(1, Math.ceil(searched.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const pageItems = searched.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   return (
     <div className="min-h-screen bg-background">
