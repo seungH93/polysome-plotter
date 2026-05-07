@@ -47,9 +47,11 @@ const TEAL = ["hsl(192 70% 35%)", "hsl(192 60% 50%)", "hsl(170 60% 40%)", "hsl(2
 export default function MaterialsDashboard() {
   const [vendorId, setVendorId] = useState<string>("ALL");
   const [category, setCategory] = useState<string>("ALL");
-  const [selectedProductId, setSelectedProductId] = useState<string>(
-    D.product[0]?.product_id ?? ""
-  );
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState<string>("name");
+  const PAGE_SIZE = 12;
 
   const vendorMap = useMemo(
     () => Object.fromEntries(D.vendor.map((v) => [v.vendor_id, v])),
