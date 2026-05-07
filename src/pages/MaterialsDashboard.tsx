@@ -412,7 +412,9 @@ function JudgementBadge({ value }: { value: string | null }) {
   return <Badge variant="outline">{value}</Badge>;
 }
 
-function RawTable({ title, rows }: { title: string; rows: Record<string, unknown>[] }) {
+function RawTable({ title, rows }: { title: string; rows: readonly Record<string, unknown>[] | unknown[] }) {
+  const data = rows as Record<string, unknown>[];
+  rows = data;
   if (!rows.length) return null;
   const cols = Object.keys(rows[0]);
   return (
