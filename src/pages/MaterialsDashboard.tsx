@@ -281,114 +281,184 @@ export default function MaterialsDashboard() {
             </Card>
           </TabsContent>
 
-          {/* EXPLORER */}
+          {/* EXPLORER - Catalog style */}
           <TabsContent value="explorer" className="space-y-4">
             <Card>
-              <CardContent className="pt-6 flex gap-4 items-end">
-                <div className="space-y-1 w-full max-w-md">
-                  <label className="text-xs font-medium text-muted-foreground">제품 선택</label>
-                  <Select value={selectedProductId} onValueChange={setSelectedProductId}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
+              <CardContent className="pt-6 flex flex-wrap gap-3 items-end">
+                <div className="relative flex-1 min-w-[260px]">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="제품명, Cat. No., 공급사, 카테고리 검색..."
+                    value={search}
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                      setPage(1);
+                    }}
+                    className="pl-9"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-muted-foreground">정렬</label>
+                  <Select value={sortBy} onValueChange={setSortBy}>
+                    <SelectTrigger className="w-[160px]"><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      {filteredProducts.map((p) => (
-                        <SelectItem key={p.product_id} value={p.product_id}>
-                          {p.product_name} · {vendorMap[p.vendor_id]?.vendor_name_kr}
-                        </SelectItem>
-                      ))}
+                      <SelectItem value="name">제품명순</SelectItem>
+                      <SelectItem value="category">카테고리순</SelectItem>
+                      <SelectItem value="price">단가 낮은순</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  총 <span className="font-semibold text-foreground">{searched.length}</span>개 제품
                 </div>
               </CardContent>
             </Card>
 
-            {selectedProduct && (
-              <>
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base">제품 기본 정보</CardTitle>
-                  </CardHeader>
-                  <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-2 text-sm">
-                    <Info label="Product ID" value={selectedProduct.product_id} />
-                    <Info label="이름" value={selectedProduct.product_name} />
-                    <Info label="Cat. No." value={selectedProduct.cat_no} />
-                    <Info label="공급사" value={vendorMap[selectedProduct.vendor_id]?.vendor_name_kr} />
-                    <Info label="카테고리" value={selectedProduct.category} />
-                    <Info label="적용 패널" value={selectedProduct.applied_panel} />
-                    <Info label="패키지" value={`${selectedProduct.package_qty ?? "-"} ${selectedProduct.unit ?? ""}`} />
-                    <Info
-                      label="단가"
-                      value={selectedProduct.unit_price_krw ? selectedProduct.unit_price_krw.toLocaleString() + " 원" : "-"}
-                    />
-                    <Info
-                      label="테스트당 단가"
-                      value={selectedProduct.price_per_test_krw ? Math.round(selectedProduct.price_per_test_krw).toLocaleString() + " 원" : "-"}
-                    />
-                    <Info label="RUO/IVD" value={selectedProduct.RUO_IVD} />
-                    <Info label="기존/후보" value={selectedProduct.current_or_candidate} />
-                    <Info label="비고" value={selectedProduct.note} />
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base">제품 스펙 (03_Product_Spec)</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {selectedSpec ? (
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-2 text-sm">
-                        {Object.entries(selectedSpec).map(([k, v]) => (
-                          <Info key={k} label={k} value={v as string} />
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="text-sm text-muted-foreground">등록된 스펙이 없습니다.</p>
-                    )}
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base">실험 이력 (Comparison ⨝ Experiment_Result)</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {productExperiments.length === 0 ? (
-                      <p className="text-sm text-muted-foreground">관련 실험이 없습니다.</p>
-                    ) : (
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Comparison</TableHead>
-                            <TableHead>Group</TableHead>
-                            <TableHead>Metric</TableHead>
-                            <TableHead>기존</TableHead>
-                            <TableHead>대안</TableHead>
-                            <TableHead>단위</TableHead>
-                            <TableHead>판정</TableHead>
-                            <TableHead>코멘트</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {productExperiments.map((e) => (
-                            <TableRow key={e.experiment_id}>
-                              <TableCell className="font-mono text-xs">{e.comparison_id}</TableCell>
-                              <TableCell>{e.metric_group}</TableCell>
-                              <TableCell>{e.metric_name}</TableCell>
-                              <TableCell>{e.current_value ?? "-"}</TableCell>
-                              <TableCell>{e.alternative_value ?? "-"}</TableCell>
-                              <TableCell>{e.unit ?? "-"}</TableCell>
-                              <TableCell>
-                                <JudgementBadge value={e.judgement} />
-                              </TableCell>
-                              <TableCell className="text-xs text-muted-foreground">{e.comment}</TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    )}
-                  </CardContent>
-                </Card>
-              </>
+            {/* Product grid */}
+            {pageItems.length === 0 ? (
+              <Card><CardContent className="pt-6 text-center text-muted-foreground">검색 결과가 없습니다.</CardContent></Card>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {pageItems.map((p) => {
+                  const expCount = D.experiment.filter((e) =>
+                    D.comparison.some(
+                      (c) =>
+                        (c.current_product_id === p.product_id || c.alternative_product_id === p.product_id) &&
+                        c.comparison_id === e.comparison_id,
+                    ),
+                  ).length;
+                  return (
+                    <button
+                      key={p.product_id}
+                      onClick={() => setSelectedProductId(p.product_id)}
+                      className="text-left group"
+                    >
+                      <Card className="h-full transition-all hover:shadow-md hover:border-primary/50 group-focus:ring-2 group-focus:ring-primary">
+                        <CardContent className="pt-5 space-y-3">
+                          <div className="flex items-start justify-between gap-2">
+                            <Badge variant="secondary" className="text-xs">{p.category}</Badge>
+                            {p.current_or_candidate && (
+                              <Badge variant="outline" className="text-xs">{p.current_or_candidate}</Badge>
+                            )}
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-foreground line-clamp-2 group-hover:text-primary">
+                              {p.product_name}
+                            </h3>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              {vendorMap[p.vendor_id]?.vendor_name_kr ?? "-"}
+                            </p>
+                          </div>
+                          <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
+                            <span className="font-mono">{p.cat_no ?? "—"}</span>
+                            <span>
+                              {p.unit_price_krw
+                                ? `${p.unit_price_krw.toLocaleString()}원`
+                                : "—"}
+                            </span>
+                          </div>
+                          {expCount > 0 && (
+                            <div className="text-xs text-primary">실험 {expCount}건</div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </button>
+                  );
+                })}
+              </div>
             )}
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 pt-2">
+                <Button variant="outline" size="sm" disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>
+                  <ChevronLeft className="h-4 w-4" /> 이전
+                </Button>
+                <span className="text-sm text-muted-foreground px-3">
+                  {currentPage} / {totalPages}
+                </span>
+                <Button variant="outline" size="sm" disabled={currentPage === totalPages} onClick={() => setPage(currentPage + 1)}>
+                  다음 <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
+
+            {/* Detail Sheet */}
+            <Sheet open={!!selectedProductId} onOpenChange={(o) => !o && setSelectedProductId(null)}>
+              <SheetContent className="w-full sm:max-w-2xl overflow-y-auto">
+                {selectedProduct && (
+                  <>
+                    <SheetHeader>
+                      <SheetTitle>{selectedProduct.product_name}</SheetTitle>
+                      <SheetDescription>
+                        {vendorMap[selectedProduct.vendor_id]?.vendor_name_kr} · {selectedProduct.category}
+                      </SheetDescription>
+                    </SheetHeader>
+
+                    <div className="mt-6 space-y-5">
+                      <section>
+                        <h4 className="text-sm font-semibold mb-3 text-foreground">제품 기본 정보</h4>
+                        <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                          <Info label="Product ID" value={selectedProduct.product_id} />
+                          <Info label="Cat. No." value={selectedProduct.cat_no} />
+                          <Info label="적용 패널" value={selectedProduct.applied_panel} />
+                          <Info label="패키지" value={`${selectedProduct.package_qty ?? "-"} ${selectedProduct.unit ?? ""}`} />
+                          <Info label="단가" value={selectedProduct.unit_price_krw ? selectedProduct.unit_price_krw.toLocaleString() + " 원" : "-"} />
+                          <Info label="테스트당 단가" value={selectedProduct.price_per_test_krw ? Math.round(selectedProduct.price_per_test_krw).toLocaleString() + " 원" : "-"} />
+                          <Info label="RUO/IVD" value={selectedProduct.RUO_IVD} />
+                          <Info label="기존/후보" value={selectedProduct.current_or_candidate} />
+                          <Info label="비고" value={selectedProduct.note} />
+                        </div>
+                      </section>
+
+                      <section>
+                        <h4 className="text-sm font-semibold mb-3 text-foreground">제품 스펙</h4>
+                        {selectedSpec ? (
+                          <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                            {Object.entries(selectedSpec).map(([k, v]) => (
+                              <Info key={k} label={k} value={v as string} />
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-sm text-muted-foreground">등록된 스펙이 없습니다.</p>
+                        )}
+                      </section>
+
+                      <section>
+                        <h4 className="text-sm font-semibold mb-3 text-foreground">실험 이력</h4>
+                        {productExperiments.length === 0 ? (
+                          <p className="text-sm text-muted-foreground">관련 실험이 없습니다.</p>
+                        ) : (
+                          <Table>
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead>Metric</TableHead>
+                                <TableHead>기존</TableHead>
+                                <TableHead>대안</TableHead>
+                                <TableHead>판정</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {productExperiments.map((e) => (
+                                <TableRow key={e.experiment_id}>
+                                  <TableCell className="text-xs">
+                                    <div>{e.metric_name}</div>
+                                    <div className="text-muted-foreground">{e.metric_group}</div>
+                                  </TableCell>
+                                  <TableCell>{e.current_value ?? "-"}</TableCell>
+                                  <TableCell>{e.alternative_value ?? "-"} {e.unit ?? ""}</TableCell>
+                                  <TableCell><JudgementBadge value={e.judgement} /></TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        )}
+                      </section>
+                    </div>
+                  </>
+                )}
+              </SheetContent>
+            </Sheet>
           </TabsContent>
 
           {/* RAW */}
