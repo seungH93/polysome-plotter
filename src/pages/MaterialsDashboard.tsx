@@ -412,11 +412,10 @@ function JudgementBadge({ value }: { value: string | null }) {
   return <Badge variant="outline">{value}</Badge>;
 }
 
-function RawTable({ title, rows }: { title: string; rows: readonly Record<string, unknown>[] | unknown[] }) {
+function RawTable({ title, rows }: { title: string; rows: readonly unknown[] }) {
   const data = rows as Record<string, unknown>[];
-  rows = data;
-  if (!rows.length) return null;
-  const cols = Object.keys(rows[0]);
+  if (!data.length) return null;
+  const cols = Object.keys(data[0]);
   return (
     <Card>
       <CardHeader><CardTitle className="text-base">{title}</CardTitle></CardHeader>
@@ -428,7 +427,7 @@ function RawTable({ title, rows }: { title: string; rows: readonly Record<string
             </TableRow>
           </TableHeader>
           <TableBody>
-            {rows.map((r, i) => (
+            {data.map((r, i) => (
               <TableRow key={i}>
                 {cols.map((c) => (
                   <TableCell key={c} className="text-xs whitespace-nowrap">
@@ -443,3 +442,4 @@ function RawTable({ title, rows }: { title: string; rows: readonly Record<string
     </Card>
   );
 }
+
