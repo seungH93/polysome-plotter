@@ -38,7 +38,7 @@ import {
   ScatterChart,
   Scatter,
 } from "recharts";
-import { FlaskConical, Package, Building2, ClipboardCheck } from "lucide-react";
+import { FlaskConical, Package, Building2, ClipboardCheck, Search, ChevronLeft, ChevronRight } from "lucide-react";
 
 const D = data as unknown as MaterialsData;
 
