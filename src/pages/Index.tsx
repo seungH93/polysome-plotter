@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
-import { FlaskConical } from "lucide-react";
+import { Link } from "react-router-dom";
+import { FlaskConical, ArrowLeft } from "lucide-react";
 import FileUpload from "@/components/FileUpload";
 import PolysomeChart from "@/components/PolysomeChart";
 import SampleControls from "@/components/SampleControls";
@@ -57,18 +58,27 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card">
-        <div className="mx-auto flex max-w-6xl items-center gap-3 px-6 py-5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-            <FlaskConical className="h-5 w-5 text-primary-foreground" />
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-6 py-5">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
+              <FlaskConical className="h-5 w-5 text-primary-foreground" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-foreground tracking-tight">
+                Polysome Profiling Viewer
+              </h1>
+              <p className="text-xs text-muted-foreground">
+                Compare up to {MAX_SAMPLES} samples · align Case to Control
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-bold text-foreground tracking-tight">
-              Polysome Profiling Viewer
-            </h1>
-            <p className="text-xs text-muted-foreground">
-              Compare up to {MAX_SAMPLES} samples · align Case to Control
-            </p>
-          </div>
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-sm text-foreground hover:bg-accent transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Materials Dashboard
+          </Link>
         </div>
       </header>
 
